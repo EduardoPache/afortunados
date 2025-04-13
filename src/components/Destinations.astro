@@ -1,0 +1,256 @@
+---
+import { Image } from "astro:assets";
+import jaco from "/Imagenes/jaco.jpg";
+import manuelantonio from "/Imagenes/manuelantonio.jpg";
+import tamarindo from "/Imagenes/jaco.jpg";
+import lafortuna from "/Imagenes/lafortuna.jpg";
+import monteverde from "/Imagenes/monteverde.jpg";
+import destinations from "../Data/destinations.json";
+
+const images = [
+  {
+    id:1,
+    src: monteverde,
+    title: "MONTEVERDE",
+    subtitle: "COSTA RICA - BOSQUE NUBOSO",
+  },
+  {
+    id:2,
+    src: manuelantonio,
+    title: "MANUEL ANTONIO",
+    subtitle: "COSTA RICA - PLAYA",
+  },
+  {
+    id:3,
+    src: jaco,
+    title: "JACÓ",
+    subtitle: "COSTA RICA - PLAYA"
+  },
+  {
+    id:4,
+    src: lafortuna,
+    title: "LA FORTUNA",
+    subtitle: "COSTA RICA - BOSQUE" },
+  {
+    id:5,
+    src: tamarindo,
+    title: "Tamarindo",
+    subtitle: "COSTA RICA - BOSQUE NUBOSO",
+  },
+];
+---
+
+<style>
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+</style>
+
+<!-- <style>
+  .carousel-container {
+  overflow: hidden;
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+.carousel-track {
+  display: flex;
+  gap: 1rem;
+  transition: transform 0.5s ease-in-out;
+  flex-direction: row-reverse;
+  pointer-events: none;
+
+}
+
+.carousel-item {
+  flex: 0 0 auto;
+  width: 150px;
+  height: 250px;
+  transition: transform 0.8s ease-in-out, width 0.8s ease-in-out, height 0.8s ease-in-out;
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+}
+
+.carousel-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+
+}
+
+.carousel-item.active {
+
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  object-fit: cover;
+}
+
+
+.carousel-thumbnails .carousel-item {
+  width: 120px;
+  height: 180px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.3s ease-in-out;
+  padding: 5px;
+}
+
+.carousel-thumbnails .carousel-item:hover {
+  transform: scale(1.1);
+}
+
+</style> -->
+
+
+<div class="relative w-full overflow-hidden bg-black min-h-screen">
+  <div class="flex overflow-x-auto snap-x snap-mandatory hide-scrollbar h-screen items-center">
+    {
+      images.map((img) => (
+        <div class="snap-center shrink-0 px-4 relative group cursor-pointer min-w-[80vw] h-[80vh] flex items-center justify-center" data-image-id={img.id}>
+          <Image src={img.src}
+            alt={img.title}
+            class="w-full h-full object-cover rounded-lg transition-transform duration-300 group-hover:scale-105"
+          />
+          <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/70 to-transparent text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <h3 class="text-xl font-bold">{img.title}</h3>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+
+
+    <!-- Modal -->
+    <div id="imageModal" class="fixed inset-0 bg-black/90 hidden z-50 flex items-center justify-center">
+      <div class="max-w-4xl w-full mx-4">
+        <div class="relative">
+          <button id="closeModal" class="absolute -top-10 right-0 text-white text-3xl">&times;</button>
+          <img id="modalImage" src="" alt="" class="w-full rounded-lg" />
+          <div class="text-white mt-4">
+            <h2 id="modalTitle" class="text-2xl font-bold mb-2"></h2>
+            <p id="modalDescription" class="text-lg"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+<!-- <div class="carousel-container">
+
+  <div id="carousel" class="carousel-track">
+    {destinations.map((img, index) => (
+      <div class={`carousel-item ${index === 0 ? "active" : ""}`}>
+        <img src={img.imagen} alt={img.titulo} />
+        <div class="text-overlay">
+          <p>{img.titulo}</p>
+          <small>{img.descripcion}</small>
+        </div>
+      </div>
+    ))}
+  </div>
+
+</div> -->
+
+
+<!-- <script>
+  const carousel = document.getElementById("carousel");
+  let items = document.querySelectorAll(".carousel-item");
+  let index = 0;
+
+  function updateCarousel() {
+    items.forEach((item, i) => {
+      item.classList.toggle("active", i === index);
+    });
+  }
+
+  // Movimiento automático del carrusel
+  setInterval(() => {
+    index = (index - 1 + items.length) % items.length; // Movimiento hacia la izquierda
+    updateCarousel();
+  }, 3000); // Cambia cada 3 segundos
+
+  updateCarousel();
+</script> -->
+
+
+<script>
+  const images = [
+  {
+    id:1,
+    src: '/Imagenes/monteverde.jpg',
+    title: "MONTEVERDE",
+    subtitle: "COSTA RICA - BOSQUE NUBOSO",
+  },
+  {
+    id:2,
+    src: '/Imagenes/manuelAntonio.jpg',
+    title: "MANUEL ANTONIO",
+    subtitle: "COSTA RICA - PLAYA",
+  },
+  {
+    id:3,
+    src: '/Imagenes/jaco.jpg',
+    title: "JACÓ",
+    subtitle: "COSTA RICA - PLAYA"
+  },
+  {
+    id:4,
+    src: '/Imagenes/lafortuna.jpg',
+    title: "LA FORTUNA",
+    subtitle: "COSTA RICA - BOSQUE" },
+  {
+    id:5,
+    src: '/Imagenes/tamarindo.jpg',
+    title: "Tamarindo",
+    subtitle: "COSTA RICA - BOSQUE NUBOSO",
+  },
+]
+
+  const modal = document.getElementById('imageModal');
+  const modalImage = document.getElementById('modalImage');
+  const modalTitle = document.getElementById('modalTitle');
+  const modalDescription = document.getElementById('modalDescription');
+  const closeModal = document.getElementById('closeModal');
+
+  document.querySelectorAll('[data-image-id]').forEach(element => {
+    element.addEventListener('click', () => {
+      const imageId = parseInt(element.dataset.imageId);
+      const image = images.find(img => img.id === imageId);
+      
+      if (image) {
+        modalImage.src = image.src;
+        modalImage.alt = image.title;
+        modalTitle.textContent = image.title;
+        modalDescription.textContent = image.description;
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+      }
+    });
+  });
+
+  closeModal.addEventListener('click', () => {
+    modal.classList.add('hidden');
+    document.body.style.overflow = 'auto';
+  });
+
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      modal.classList.add('hidden');
+      document.body.style.overflow = 'auto';
+    }
+  });
+</script>
