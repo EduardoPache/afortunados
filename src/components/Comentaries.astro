@@ -1,9 +1,8 @@
-<div
-  class="p-6 min-h-[60vh] bg-[#879996] text-black flex flex-col-reverse md:flex-row gap-8 items-center"
->
-
+<div class="p-6 min-h-[60vh] bg-[#879996] text-black flex flex-col-reverse md:flex-row gap-8 items-center">
+  <!-- Columna de texto -->
   <div class="w-full md:w-1/2 flex flex-col gap-4">
     <div class="flex items-center gap-4">
+      <div class="w-12 h-12 rounded-full bg-white"></div>
       <h2 class="text-xl font-semibold">Lorem ipsum dolor</h2>
     </div>
     <h3 class="text-2xl font-semibold">Lorem ipsum dolor sit amet,</h3>
@@ -16,9 +15,10 @@
     </p>
   </div>
 
-  <div class="flex items-center justify-center min-h-screen  p-6">
+  <!-- Columna de imágenes -->
+  <div class="w-full md:w-1/2 flex items-center justify-center p-6">
     <div class="grid grid-cols-2 gap-4 max-w-[600px] w-full">
-  
+      <!-- Imagen principal -->
       <div class="bg-white rounded-xl h-[300px] md:h-[355px] col-span-1">
         <img
           src="/Imagenes/v2.jpg"
@@ -27,6 +27,7 @@
         />
       </div>
 
+      <!-- Imágenes secundarias -->
       <div class="grid grid-rows-2 gap-4 col-span-1">
         <div class="bg-white rounded-xl h-[195px]">
           <img

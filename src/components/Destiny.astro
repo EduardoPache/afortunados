@@ -1,10 +1,12 @@
 ---
-import monteverde from "/Imagenes/monteverde.jpg";
-import manuelantonio from "/Imagenes/manuelantonio.jpg";
-import jaco from "/Imagenes/jaco.jpg";
-import lafortuna from "/Imagenes/lafortuna.jpg";
-import tamarindo from "/Imagenes/jaco.jpg"; // corregir si es necesario
-
+import { Image } from "astro:assets";
+import monteverde from "../assets/monteverde.jpg";
+import manuelantonio from "../assets/manuelantonio.jpg";
+import jaco from "../assets/jaco.jpg";
+import lafortuna from "../assets/lafortuna.jpg";
+import tamarindo from "../assets/jaco.jpg"; // corregir si es necesario
+import left from "../assets/left-arrow.png";
+import right from "../assets/right-arrow.png";
 const images = [
   {
     id: 1,
@@ -35,7 +37,7 @@ const images = [
 ---
 
 <div class="w-full h-screen relative overflow-hidden" client:load>
-  <!-- Imagen de fondo -->
+  <!-- Imagen principal -->
   <img
     id="destiny-image"
     src={images[0].src}
@@ -43,7 +45,7 @@ const images = [
     class="absolute inset-0 w-full h-full object-cover transition-all duration-700 z-0"
   />
 
-  <!-- Texto en foreground -->
+  <!-- Texto -->
   <div class="absolute top-20 left-10 z-10">
     <h1 class="text-5xl font-bold drop-shadow-xl text-white" id="destiny-title">
       {images[0].title}
@@ -53,46 +55,96 @@ const images = [
     </p>
   </div>
 
-  <!-- Slider en la esquina inferior derecha -->
-  <div class="absolute bottom-10 right-10 z-20 flex gap-6">
-    {
-      images.map((img) => (
-        <div
-          class="relative w-[200px] h-[300px] rounded-2xl overflow-hidden shadow-2xl cursor-pointer transition-transform hover:scale-105"
-          data-src={img.src}
-          data-title={img.title}
-          data-subtitle={img.subtitle}
-        >
-          <img
-            src={img.src}
-            alt={img.title}
-            class="w-full h-full object-cover"
-          />
-          <div class="absolute bottom-0 left-0 bg-white/90 text-black text-sm font-bold px-3 py-2 rounded-tr-xl">
-            {img.title}
-          </div>
+  <!-- Slider desktop -->
+  <div class="absolute bottom-10 right-10 z-20 flex gap-6 hidden md:flex">
+    {images.map((img) => (
+      <div
+        class="relative w-[200px] h-[300px] rounded-2xl overflow-hidden shadow-2xl cursor-pointer transition-transform hover:scale-105"
+        data-src={img.src}
+        data-title={img.title}
+        data-subtitle={img.subtitle}
+      >
+        <img src={img.src} alt={img.title} class="w-full h-full object-cover" />
+        <div class="absolute bottom-0 left-0 bg-white/90 text-black text-sm font-bold px-3 py-2 rounded-tr-xl">
+          {img.title}
         </div>
-      ))
-    }
+      </div>
+    ))}
   </div>
 
+  <!-- Botones móvil -->
+  <div class="absolute inset-y-1/2 left-4 z-20 flex md:hidden">
+    <button id="prev-btn" class=" text-2xl  rounded-full hover:bg-white/90"><Image class="w-8 bg-white rounded-2xl p-2" src={left} alt="derecha"/></button>
+  </div>
+  <div class="absolute inset-y-1/2 right-4 z-20 flex md:hidden">
+    <button id="next-btn" class=" text-2xl  rounded-full hover:bg-white/90"><Image class="w-8 bg-white rounded-2xl p-2" src={right} alt="derecha"/></button>
+  </div>
+
+  <!-- Puntos navegación móvil -->
+  <div id="dots-container" class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2 md:hidden">
+    {images.map((img, index) => (
+      <div class="w-3 h-3 rounded-full bg-white/60" data-dot-index={index}></div>
+    ))}
+  </div>
+
+  <!-- Script -->
   <script type="module" is:inline>
     const imgEl = document.getElementById("destiny-image");
     const titleEl = document.getElementById("destiny-title");
     const subtitleEl = document.getElementById("destiny-subtitle");
 
     const cards = document.querySelectorAll("[data-src]");
+    const prevBtn = document.getElementById("prev-btn");
+    const nextBtn = document.getElementById("next-btn");
+    const dots = document.querySelectorAll("[data-dot-index]");
 
-    cards.forEach((card) => {
+    const images = Array.from(cards).map((card) => ({
+      src: card.getAttribute("data-src"),
+      title: card.getAttribute("data-title"),
+      subtitle: card.getAttribute("data-subtitle"),
+    }));
+
+    let currentIndex = 0;
+
+    function updateDisplay(index) {
+      const img = images[index];
+      imgEl.src = img.src;
+      titleEl.textContent = img.title;
+      subtitleEl.textContent = img.subtitle;
+
+      dots.forEach((dot, i) => {
+        dot.classList.toggle("bg-white", i === index);
+        dot.classList.toggle("bg-white/60", i !== index);
+      });
+    }
+
+    // Desktop cards
+    cards.forEach((card, index) => {
       card.addEventListener("click", () => {
-        const src = card.getAttribute("data-src");
-        const title = card.getAttribute("data-title");
-        const subtitle = card.getAttribute("data-subtitle");
-
-        if (imgEl) imgEl.src = src;
-        if (titleEl) titleEl.textContent = title;
-        if (subtitleEl) subtitleEl.textContent = subtitle;
+        currentIndex = index;
+        updateDisplay(currentIndex);
       });
     });
+
+    // Móvil: botones
+    prevBtn?.addEventListener("click", () => {
+      currentIndex = (currentIndex - 1 + images.length) % images.length;
+      updateDisplay(currentIndex);
+    });
+
+    nextBtn?.addEventListener("click", () => {
+      currentIndex = (currentIndex + 1) % images.length;
+      updateDisplay(currentIndex);
+    });
+
+    // Móvil: puntos
+    dots.forEach((dot) => {
+      dot.addEventListener("click", () => {
+        currentIndex = Number(dot.dataset.dotIndex);
+        updateDisplay(currentIndex);
+      });
+    });
+
+    updateDisplay(currentIndex);
   </script>
 </div>
